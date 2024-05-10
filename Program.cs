@@ -2,38 +2,7 @@
 
 using System.Text.RegularExpressions;
 
-class Calculator
-{
-    public static double DoOperation(double num1, double num2, string op)
-    {
-        double result = double.NaN; // Default value is "Not A Number" for invalid operation
-
-        // Use a switch statement to do math
-        switch (op)
-        {
-            case "a":
-                result = num1 + num2;
-                break;
-            case "s":
-                result = num1 - num2;
-                break;
-            case "m":
-                result = num1 * num2;
-                break;
-            case "d":
-                // ask the user to enter a non-zero diviser
-                if (num2 != 0)
-                {
-                    result = num1 / num2;
-                }
-                break;
-
-            default:
-                break;
-        }
-        return result;
-    }
-}
+using CalculatorLibrary;
 
 class Program
 {
@@ -44,17 +13,15 @@ class Program
         Console.WriteLine("Console Calculator with C#");
         Console.WriteLine("--------------------------"); 
 
+        Calculator calculator = new("json");
         while(!endApp)
         {
-            string? numInput1 = "";
-            string? numInput2 = "";
-            double result = 0;
 
             // ask the user to enter the first number
             Console.Write("Type a number, then press enter");
-            numInput1 = Console.ReadLine();
+            string? numInput1 = Console.ReadLine();
 
-            double cleanNum1 = 0;
+            double cleanNum1;
             while (!double.TryParse(numInput1, out cleanNum1))
             {
                 Console.Write("This is not a valid number, please try again");
@@ -63,9 +30,9 @@ class Program
 
             // ask the user to enter the second number
             Console.Write("Type a second number, then press enter");
-            numInput2 = Console.ReadLine();
+            string? numInput2 = Console.ReadLine();
 
-            double cleanNum2 = 0;
+            double cleanNum2;
             while(!double.TryParse(numInput2, out cleanNum2))
             {
                 Console.Write("This is not a valid number, please try again");
@@ -91,7 +58,7 @@ class Program
             {
                 try
                 {
-                    result = Calculator.DoOperation(cleanNum1, cleanNum2, op);
+                    double result = calculator.DoOperation(cleanNum1, cleanNum2, op);
                     if (double.IsNaN(result))
                     {
                         Console.WriteLine("This operation will results in nan");
@@ -114,6 +81,7 @@ class Program
             endApp = Console.ReadLine() == "n";
             Console.WriteLine("\n");
         }
+        calculator.Finish();
         return;
     }
 }
