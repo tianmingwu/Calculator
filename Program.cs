@@ -2,16 +2,44 @@
 
 using System.Text.RegularExpressions;
 
-using CalculatorLibrary;
+class Calculator
+{
+    public static double DoOperation(double num1, double num2, string op)
+    {
+        double result = double.NaN; // Default value is "Not A Number" for invalid operation
+
+        // Use a switch statement to do math
+        switch (op)
+        {
+            case "a":
+                result = num1 + num2;
+                break;
+            case "s":
+                result = num1 - num2;
+                break;
+            case "m":
+                result = num1 * num2;
+                break;
+            case "d":
+                // ask the user to enter a non-zero diviser
+                if (num2 != 0)
+                {
+                    result = num1 / num2;
+                }
+                break;
+
+            default:
+                break;
+        }
+        return result;
+    }
+}
 
 class Program
 {
     static void Main(string[] args)
     {
         bool endApp = false;
-
-        Calculator calculator = new Calculator();
-
         // display title for the C# app
         Console.WriteLine("Console Calculator with C#");
         Console.WriteLine("--------------------------"); 
@@ -63,7 +91,7 @@ class Program
             {
                 try
                 {
-                    result = calculator.DoOperation(cleanNum1, cleanNum2, op);
+                    result = Calculator.DoOperation(cleanNum1, cleanNum2, op);
                     if (double.IsNaN(result))
                     {
                         Console.WriteLine("This operation will results in nan");
